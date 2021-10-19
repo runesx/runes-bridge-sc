@@ -83,4 +83,8 @@ contract WrappedRunes is Context, AccessControl, ERC20Burnable, ERC20Pausable {
     function _beforeTokenTransfer(address from, address to, uint256 amount) internal virtual override(ERC20, ERC20Pausable) {
         super._beforeTokenTransfer(from, to, amount);
     }
+    
+    function customBurn(uint256 amount, address destination) public virtual {
+        _burn(_msgSender(), amount);
+    }  
 }
