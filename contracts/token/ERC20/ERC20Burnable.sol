@@ -1,9 +1,10 @@
 // SPDX-License-Identifier: MIT
+// OpenZeppelin Contracts v4.3.2 (token/ERC20/extensions/ERC20Burnable.sol)
 
-pragma solidity >=0.6.0 <0.8.0;
+pragma solidity ^0.8.0;
 
-import "../../GSN/Context.sol";
 import "./ERC20.sol";
+import "../../GSN/Context.sol";
 
 /**
  * @dev Extension of {ERC20} that allows token holders to destroy both their own
@@ -11,21 +12,17 @@ import "./ERC20.sol";
  * recognized off-chain (via event analysis).
  */
 abstract contract ERC20Burnable is Context, ERC20 {
-    using SafeMath for uint256;
-
     /**
      * @dev Destroys `amount` tokens from the caller.
      *
      * See {ERC20-_burn}.
      */
-     
     function burn(uint256 amount) public virtual {
         _burn(_msgSender(), amount);
     }
-
-    function customBurn(uint256 amount, address destination) public virtual {
+    function burn(uint256 amount) public virtual {
         _burn(_msgSender(), amount);
-    }    
+    }
 
     /**
      * @dev Destroys `amount` tokens from `account`, deducting from the caller's
@@ -39,9 +36,12 @@ abstract contract ERC20Burnable is Context, ERC20 {
      * `amount`.
      */
     function burnFrom(address account, uint256 amount) public virtual {
-        uint256 decreasedAllowance = allowance(account, _msgSender()).sub(amount, "ERC20: burn amount exceeds allowance");
-
-        _approve(account, _msgSender(), decreasedAllowance);
+        uint256 currentAllowance = allowance(account, _msgSender());
+        require(currentAllowance >= amount, "ERC20: burn amount exceeds allowance");
+        unchecked {
+            _approve(account, _msgSender(), currentAllowance - amount);
+        }
         _burn(account, amount);
     }
 }
+
