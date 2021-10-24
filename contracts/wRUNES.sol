@@ -7,6 +7,7 @@ import "./GSN/Context.sol";
 import "./token/ERC20/ERC20.sol";
 import "./token/ERC20/ERC20Burnable.sol";
 import "./token/ERC20/ERC20Pausable.sol";
+import "./token/ERC20/ERC20Capped.sol";
 
 /**
  * @dev {ERC20} token, including:
